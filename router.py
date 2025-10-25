@@ -70,7 +70,7 @@ def update_product(
     price: float
 ):
     for product in products:
-       if product_id["id"] == id:
+       if product["id"] == product_id:
            
            product["name"]= name
            
@@ -89,3 +89,4 @@ def delete_product(product_id:int):
             products.remove(product)
     
     return products
+            
