@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from router import Product, products
+from models import Product,products
+from auth import Router as auth_router
 
 app = FastAPI()
 
-
+app.include_router(auth_router)
 
 app.get("/")
 def read_products():
