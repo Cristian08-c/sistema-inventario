@@ -11,14 +11,10 @@ def Login(credentials: Login):
     user = credentials.Username
     password = credentials.Password
 
-
-
-    if verifypassword(password,userdb):
-        print("Contraseña correcta")
+    if not verifypassword(password,userdb):
+        raise HTTPException(status_code=400,detail="Credenciales incorrectas")
     else:
-        print("Contraseña incorrecta")
-    
-    raise HTTPException(status_code=200,detail="Login exitoso")
+        raise HTTPException(status_code=200,detail="Login exitoso")
 
 
 @Router.post("/register/")
