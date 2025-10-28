@@ -3,6 +3,20 @@ from models import Product,products
 from auth import Router as auth_router
 import requests
 import json
+from fastapi import Depends, HTTPException
+import utils.jwt_handler_util
+from fastapi.security import OAuth2PasswordBearer
+import main
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    payload = utils.jwt_handler_util.verify_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")
+    return payload
+
+
 
 app = FastAPI()
 
@@ -74,16 +88,35 @@ class Authentication:
 
     def login(self):
         print("Iniciando login para:", self.username)
-        url = "https://api-test-0cxg.onrender.com/auth/login/"
+        url = "http://127.0.0.1:8000/auth/login/"
         payload = {
             "Username": self.username,
             "Password": self.password
         }
-        response = requests.post(url, json=payload)
-        if response.status_code == 200:
-            print("Login exitoso")
-        elif response.status_code == 400:
-            print("Credenciales incorrectas")
+
+        try:
+            response = requests.post(url, json=payload)
+            print("📡 Status:", response.status_code)
+            print("📦 Respuesta:", response.text)
+        except Exception as e:
+            print("⚠️ Error al hacer la request:", e)
+            return None
+
+        try:
+            data = response.json()
+        except Exception:
+            print("⚠️ Error interpretando respuesta:", response.text)
+            return None
+
+        if response.status_code == 200 and data.get("status") == "ok":
+            token = data.get("access_token")
+            if token:
+                print("✅ Login exitoso. Token recibido.")
+                return token
+                
+        else:
+            print(f"❌ Error en login: {data.get('detail', 'Error desconocido')}")
+            return None
 
     def signup(self):
         print("Iniciando registro para:", self.username)

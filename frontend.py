@@ -1,4 +1,5 @@
 import customtkinter as CTK
+import main
 import backend
 import time
 import threading
@@ -151,10 +152,10 @@ class AuthenticateApp(CTK.CTk):
             hover_color="#1665a2",
             cursor="hand2",
             command=lambda:(
-            backend.Authentication(
+            main.procesar_login(
             entry_username.get(),
             entry_password.get()
-            ).login()
+            )
           )
         )
 
@@ -169,6 +170,40 @@ class AuthenticateApp(CTK.CTk):
         label_signup.bind("<Button-1>", lambda e: self.sign_up())
         label_signup.bind("<Enter>", lambda e: label_signup.configure(text_color="#1f6aa5"))
         label_signup.bind("<Leave>", lambda e: label_signup.configure(text_color="white"))
+
+class HomeApp(CTK.CTk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Home")
+
+        window_width = 800
+        window_height = 600
+
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        x = int((screen_width / 2) - (window_width / 2))
+        y = int((screen_height / 2) - (window_height / 2))
+
+        self.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        self.resizable(False, False)
+
+        label = CTK.CTkLabel(master=self, text="Welcome to the Home Screen", font=("Segoe UI", 30, "bold"))
+        label.pack(pady=200)
+
+        cerrar_sesion_button = CTK.CTkButton(
+            master=self,
+            text="Cerrar Sesión",
+            font=("Segoe UI", 18, "bold"),
+            width=200,
+            height=40,
+            fg_color="#ff5c5c",
+            hover_color="#e04e4e",
+            cursor="hand2",
+            command=lambda: main.cerrar_sesion()
+        )
+        cerrar_sesion_button.pack(pady=20)
 
 if __name__ == "__main__":
     AuthenticateApp().mainloop()
