@@ -30,10 +30,8 @@ def read_user_by_username(username):
     response = supabase.table("users").select("*").eq("username",username).execute()
     if not response.data:
         print("User no encontado")
+        return None
     else:
-        return response.data[0]["username"],response.data[0]["password"]
+        return response.data[0]
 
 
-user,password = read_user_by_username("Safe")
-
-print(password)
