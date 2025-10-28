@@ -3,7 +3,7 @@ from models import Login, Register
 from utils.auth_util import hash_password,verifypassword
 from db import *
 
-Router = APIRouter(prefix="/auth",tags=["Auth"])
+router = APIRouter(prefix="/auth",tags=["Auth"])
 
 
 
