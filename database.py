@@ -21,13 +21,15 @@ def create_user(username, password, role):
     print("Usuario creado:", response.data)
 
 
+
+
 def read_user_by_username(username):
-    data = {"username":username}
+    data = {"username"}
 
     response = supabase.table("users").select("*").eq("username",username).execute()
     if not response.data:
         print("User no encontado")
-        return
+        return None
     else:
-        return response.data[0]["username"],response.data[0]["password"]
+        return response.data[0]
 
