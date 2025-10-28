@@ -4,8 +4,6 @@ from auth import Router as auth_router
 import requests
 import json
 
-
-#Funciones CRUD para productos
 app = FastAPI()
 
 app.include_router(auth_router)
@@ -64,6 +62,8 @@ def delete_product(product_id:int):
             products.remove(product)
     
     return products
+
+
 
 
 
