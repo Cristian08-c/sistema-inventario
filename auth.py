@@ -1,29 +1,38 @@
 from fastapi import FastAPI,APIRouter, HTTPException
 from models import Login, Register
 from utils.auth_util import hash_password,verifypassword
-from database import *
+from db import *
+
 Router = APIRouter(prefix="/auth",tags=["Auth"])
 
 
 
 @Router.post("/login/")
-def Login1(credentials: Login):
+def Login(credentials: Login):
 
     user = credentials.Username
     password = credentials.Password
 
 
-    User,HashedPassword = read_user_by_username(user)
+    DataUser = read_user_by_username(user)
 
-    if User:
-        if not verifypassword(password,HashedPassword):
+    if DataUser is None:
+         raise HTTPException(status_code=404,detail="User not found")
+
+    if DataUser["username"]:
+      
+        if not verifypassword(password,DataUser["password"]):
             raise HTTPException(status_code=400,detail="Credenciales incorrectas")
         else:
-            raise HTTPException(status_code=200,detail="Login exitoso")
+            return {"status": "ok", "message": "Login exitoso"}
+    else:
+        raise HTTPException(status_code=404,detail="contraseña incorrecta")
+
+
 
 
 @Router.post("/register/")
-def Register1(credentials: Register):
+def Login(credentials: Register):
     
     user = credentials.Username
     password = credentials.Password
@@ -33,3 +42,6 @@ def Register1(credentials: Register):
     create_user(user,HashedData,"none")
 
     raise HTTPException(status_code=200,detail="Registro exitoso")
+
+
+
