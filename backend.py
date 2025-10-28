@@ -74,7 +74,7 @@ class Authentication:
 
     def login(self):
         print("Iniciando login para:", self.username)
-        url = "http://127.0.0.1:8000/auth/login/"
+        url = "https://api-test-0cxg.onrender.com/auth/login/"
         payload = {
             "Username": self.username,
             "Password": self.password
@@ -87,7 +87,7 @@ class Authentication:
 
     def signup(self):
         print("Iniciando registro para:", self.username)
-        url = "http://127.0.0.1:8000/auth/register/"
+        url = "https://api-test-0cxg.onrender.com/auth/register/"
         payload = {
             "Username": self.username,
             "Password": self.password

@@ -32,7 +32,7 @@ def Login(credentials: Login):
 
 
 @Router.post("/register/")
-def Login(credentials: Register):
+def Register(credentials: Register):
     
     user = credentials.Username
     password = credentials.Password
