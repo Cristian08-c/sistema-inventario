@@ -5,21 +5,26 @@ from pydantic import BaseModel
 app = FastAPI()
 
 
+wallet = 0.0
+
+
+historial_compras = []
+
+
 products = [{
-  "id": 0,
-  "name": "string",
-  "category": "string",
-  "price": 0,
-  "stock": 10
+  "id": 1,
+  "name": "Pan",
+  "category": "Comestibles",
+  "price": 2,
+  "stock": 200
   
 },
 {
-  "id": 1,
-  "name": "string",
-  "category": "string",
-  "price": 0,
-  "stock": 10
-  
+  "id": 2,
+  "name": "Lechuga",
+  "category": "Vegetales",
+  "price": 3,
+  "stock": 200
 }        
 ]
 
@@ -37,7 +42,6 @@ class Category(BaseModel):
     Id: int
     
     name: str
-
 
 
 

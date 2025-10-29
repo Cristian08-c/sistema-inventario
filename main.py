@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from models import Product,products, Category, categories
+from models import Product,products, Category, categories, wallet, historial_compras
 from auth import Router as auth_router
 
 app = FastAPI()
@@ -34,6 +34,16 @@ def read_stock(product_id: int):
 @app.get("/categories")
 def read_categories():
     return categories
+
+
+@app.get("/Wallet")
+def read_wallet():
+    return wallet
+
+
+@app.get("/compras")
+def read_compras():
+    return historial_compras
 
 
 @app.post("/products")
@@ -72,6 +82,46 @@ def create_categories(category:Category):
         
     categories.append(nueva_categoria)
     return{"message":"Categoria creada correctamente","Categoria": nueva_categoria}
+
+
+@app.post("/buy/{product_id}")
+def buy_product(product_id:int, cantidad: int):
+    global wallet
+    for producto in products:
+        if producto["id"] == product_id:
+            if producto["stock"] < cantidad:
+                return {"Error":"No hay suficiente Stock disponible"}
+        
+            total_price = producto["price"] * cantidad
+            producto["stock"] -= cantidad
+            wallet += total_price
+            
+            
+            compra = {
+                "product_id": product_id,
+                "product name":producto["name"],
+                "cantidad": cantidad,
+                "total pagado":total_price,
+                "stock restante":producto["stock"]
+            }
+            historial_compras.append(compra)
+            
+            return {
+            "message": "Compra realizada correctamente",
+            "total pagado":total_price,
+            "nuevo stock":producto["stock"],
+            "cartera actual": wallet
+        }
+    return{"Error":"Producto no encontrado"}
+            
+       
+            
+            
+        
+        
+      
+       
+    
 
 
 @app.put("/products/{product_id}")
