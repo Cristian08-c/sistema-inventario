@@ -24,6 +24,13 @@ def read_product_by_id(product_id : int):
    return {"message":"Producto no encotrado"}
 
 
+@app.get("/Stock/{product_id}")
+def read_stock(product_id: int):
+    for producto in products:
+        if producto["id"] == product_id:
+            return{"El stock disponible es:":producto["stock"]}
+
+
 @app.get("/categories")
 def read_categories():
     return categories
@@ -31,14 +38,40 @@ def read_categories():
 
 @app.post("/products")
 def create_products(product: Product):
-    products.append(product)
-    return{"message:":"Producto creado correctamente","producto": product}
+    for producto in products:
+        if producto["id"] == product.Id:
+            return {"Error":"Ya existe un producto con ese ID"}
+    if product.price <= 0:
+        return{"Error":"El precio debe ser mayor a 0"}
+    if product.stock <= 0:
+        return {"Error":"El stock no puede ser negativo"}
+    
+    new_product = {
+        "id": product.Id,
+        "name": product.name,
+        "category": product.category,
+        "price": product.price,
+        "stock": product.stock
+    }
+    
+    products.append(new_product)
+    return {"Message":"Producto publicado correctamente", "producto": new_product}
+    
 
 
 @app.post("/categories")
 def create_categories(category:Category):
-    categories.append(category)
-    return{"message":"Categoria creada correctamente","Categoria":category}
+    for categoria in categories:
+        if categoria["id"] == category.Id:
+            return {"Error":"Ya existe una categoria con ese ID"}
+        
+    nueva_categoria = {
+        "id": category.Id,
+        "name": category.name
+    }
+        
+    categories.append(nueva_categoria)
+    return{"message":"Categoria creada correctamente","Categoria": nueva_categoria}
 
 
 @app.put("/products/{product_id}")
@@ -75,9 +108,8 @@ def update_category(
        if category["id"] == category_id:
            
            category["name"]= name
-           
-          
-    return {"Se actualizo el producto correctamente": categories}
+           return {"Se actualizo el producto correctamente": categories}
+       return{"Error":" Categoria no encontrada"}
 
 
 @app.delete("/products/{product_id}")

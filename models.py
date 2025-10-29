@@ -10,6 +10,7 @@ products = [{
   "name": "string",
   "category": "string",
   "price": 0,
+  "stock": 10
   
 },
 {
@@ -17,6 +18,7 @@ products = [{
   "name": "string",
   "category": "string",
   "price": 0,
+  "stock": 10
   
 }        
 ]
@@ -48,6 +50,8 @@ class Product(BaseModel):
     category: str
     
     price: float
+    
+    stock: int
     
 
 
