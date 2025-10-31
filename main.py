@@ -16,19 +16,15 @@ def read_products():
     return products
 
 
-@app.get("/products/{product_id}")
-def read_product_by_id(product_id : int):
-   for producto in products:
-       if producto["id"] == product_id:
-           return{"producto":producto}
-   return {"message":"Producto no encotrado"}
-
-
-@app.get("/Stock/{product_id}")
-def read_stock(product_id: int):
-    for producto in products:
-        if producto["id"] == product_id:
-            return{"El stock disponible es:":producto["stock"]}
+@app.get("/products/by_category")
+def read_product_by_cat(category_name: str):
+    products_in_category = [
+        product for product in products if product["category"].lower() == category_name.lower()
+    ]
+    
+    if not products_in_category:
+        return {"message":"No existen productos en la categoria"}
+    return {"productos": products_in_category}
 
 
 @app.get("/categories")

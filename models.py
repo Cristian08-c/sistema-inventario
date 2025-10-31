@@ -29,17 +29,16 @@ products = [{
 ]
 
 categories = [{
-    "id": 0,
+    
     "name": "Comestibles"
 },
 {
-    "id": 1,
+    
     "name": "Aseo"    
 }              
               ]
 
 class Category(BaseModel):
-    Id: int
     
     name: str
 
